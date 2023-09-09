@@ -9,7 +9,7 @@ namespace KinectMouseV1
     {
         private readonly KinectHandler _kinectHandler;
 
-        private bool _running = false;
+        private bool _running = true;
 
         public MouseController(MainApplicationContext context)
         {
@@ -30,6 +30,8 @@ namespace KinectMouseV1
 
         private void OnHandClosedChange(bool closed)
         {
+            if (!_running) return;
+
             if (closed)
             {
                 MouseHook.MouseDown();
@@ -42,6 +44,8 @@ namespace KinectMouseV1
 
         private void OnHandPositionChange(SkeletonPoint pos)
         {
+            if (!_running) return;
+
             // Conversion
             var mapper = _kinectHandler.GetCoordinateMapper();
             var point = mapper.MapSkeletonPointToDepthPoint(pos, DepthImageFormat.Resolution640x480Fps30);
